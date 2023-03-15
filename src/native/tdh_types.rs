@@ -47,6 +47,7 @@ impl Property {
 
             let length = if flags.contains(PropertyFlags::PROPERTY_PARAM_LENGTH) {
                 // TODO: support properties that point at sibling property to tell the length of the property
+                log::error!("Property contains unsupported flag: {}", name);
                 return Err(PropertyError::UnimplementedType);
             } else {
                 // The property has no param for its length, it makes sense to access this field of the union

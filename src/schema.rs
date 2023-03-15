@@ -101,7 +101,11 @@ impl Schema {
         let cache = self.cached_properties.get_or_init(|| {
             let mut cache = Vec::new();
             for property in self.te_info.properties() {
-                cache.push(property?)
+                if let Ok(property) = property {
+                    cache.push(property)
+                } else {
+                    log::error!("One of the property types is not implemented");
+                }
             }
             Ok(cache)
         });
