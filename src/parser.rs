@@ -414,6 +414,17 @@ impl private::TryParse<IpAddr> for Parser<'_, '_> {
         Ok(res)
     }
 }
+impl private::TryParse<bool> for Parser<'_, '_> {
+    fn try_parse_impl(&self, name: &str) -> ParserResult<bool> {
+        let prop_slice = self.find_property(name)?;
+
+        if 4 != prop_slice.buffer.len() {
+            return Err(ParserError::LengthMismatch);
+        }
+        let tmp: [u8; 4] = prop_slice.buffer.try_into()?;
+        Ok(tmp[0] != 0)
+    }
+}
 
 #[derive(Clone, Default, Debug)]
 pub struct Pointer(usize);
